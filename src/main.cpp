@@ -31,7 +31,7 @@ int main()
 	Render render(width, height);	
 
 	sf::Image image;
-	image.loadFromFile("rusImage.png");
+	image.loadFromFile("model/modelTexture.png");
 	Bitmap map(image.getSize().x, image.getSize().y);
 	const sf::Uint8* pp = image.getPixelsPtr();
 	for (int i = 0; i < image.getSize().x * image.getSize().y * 4; i += 4) {
@@ -42,7 +42,7 @@ int main()
 	}
 
 	std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
-	ObjModel vehicle("rus3.obj");
+	ObjModel vehicle("model/model.obj");
 	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> speed = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
 	std::cout << "Model loading time: " << speed.count() << "s\n";

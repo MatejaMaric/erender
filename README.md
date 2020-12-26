@@ -1,6 +1,4 @@
-## Current issues
-* Z-Buffer doesn't work (probably for some stupid reason, but it gives me a serious headache)
-![alt text](https://github.com/MatejaMaric/erender/blob/master/shots/1.png "Shot 1")
-![alt text](https://github.com/MatejaMaric/erender/blob/master/shots/2.png "Shot 2")
-![alt text](https://github.com/MatejaMaric/erender/blob/master/shots/3.png "Shot 3")
-![alt text](https://github.com/MatejaMaric/erender/blob/master/shots/4.png "Shot 4")
+Inspired by [thebennybox's 3D Software Rendering](https://www.youtube.com/playlist?list=PLEETnX-uPtBUbVOok816vTl1K9vV1GgH5) series but made using C++ and [SFML](https://www.sfml-dev.org/).
+It also implements the barycentric rendering technique instead of the scanline technique. 
+
+To compile this program you need to install `libsfml-dev` package and run `make`.
