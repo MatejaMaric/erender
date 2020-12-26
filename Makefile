@@ -6,5 +6,5 @@ CXX=g++
 build: src/*
 	$(CXX) $(CXXFLAGS) src/* -o $(NAME) $(LIBS)
 
-run: erender
-	./erender
+run: $(NAME)
+	./$(NAME)
