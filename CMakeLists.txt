@@ -1,14 +1,19 @@
 cmake_minimum_required(VERSION 3.13)
+# Set project name
 project(erender)
 
+# Set C++ standard
 set( CMAKE_CXX_STANDARD 17 )
 
+# Add all files in `src` directory to SRC_LIST variable
 aux_source_directory(./src/ SRC_LIST)
+
+# Set project executable's name
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
+# Auto-update git submodules
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-# Update submodules as needed
     option(GIT_SUBMODULE "Check submodules during build" ON)
     if(GIT_SUBMODULE)
         message(STATUS "Submodule update")
@@ -21,12 +26,13 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 
+# Check if submodules are available
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/SFML/CMakeLists.txt")
     message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 
+# Compile and add SFML to project
 add_subdirectory(external/SFML)
 target_include_directories(${PROJECT_NAME} PUBLIC external/SFML/include)
 target_link_directories(${PROJECT_NAME} PUBLIC external/SFML/lib)
-
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
