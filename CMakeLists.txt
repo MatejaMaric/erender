@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 # Set project name
 project(erender)
 
-# Set C++ standard
-set( CMAKE_CXX_STANDARD 17 )
+# Set C++ version to 14 because sfml-audio needs auto_ptr to compile
+set( CMAKE_CXX_STANDARD 14 )
 
 # Add all files in `src` directory to SRC_LIST variable
 aux_source_directory(./src/ SRC_LIST)
