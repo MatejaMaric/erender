@@ -36,3 +36,10 @@ add_subdirectory(external/SFML)
 target_include_directories(${PROJECT_NAME} PUBLIC external/SFML/include)
 target_link_directories(${PROJECT_NAME} PUBLIC external/SFML/lib)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
+
+# Copy model to build directory
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/model
+        ${CMAKE_CURRENT_BINARY_DIR}/model)
