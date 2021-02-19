@@ -22,6 +22,7 @@ public:
 	std::vector<Texture_Coordinates> uvcoo;
 	std::vector<Vector4f> normals;
 	std::vector<Triangle> faces;
+  bool isLoaded;
   std::chrono::duration<double> loadingTime;
 	ObjModel();
 	ObjModel(std::string fileName);

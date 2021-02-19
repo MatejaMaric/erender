@@ -57,39 +57,46 @@ int main()
     std::cerr << "Couldn't load and/or find texture!\n";
   }
 
-	std::cout << "Model loading time: " << model.loadingTime.count() << "s\n";
-	std::cout << "Vertices count: " << model.vertices.size() << "\nNumber of normals: " << model.normals.size() << "\nUV count: " << model.uvcoo.size() << "\n";
-	std::cout << "Number of faces: " << model.faces.size() << "\n";
+  if (model.isLoaded) {
+    std::cout << "Model loading time: " << model.loadingTime.count() << "s\n";
+    std::cout << "Vertices count: " << model.vertices.size() << "\nNumber of normals: " << model.normals.size() << "\nUV count: " << model.uvcoo.size() << "\n";
+    std::cout << "Number of faces: " << model.faces.size() << "\n";
+  }
+  else {
+    std::cerr << "Couldn't load and/or find model!\n";
+  }
 
-	while (window.isOpen())
-	{
-		while (window.pollEvent(event))
-			if (event.type == sf::Event::Closed)
-				window.close();
+  if (textureLoaded && model.isLoaded) {
+    while (window.isOpen())
+    {
+      while (window.pollEvent(event))
+        if (event.type == sf::Event::Closed)
+          window.close();
 
-		time = clock.getElapsedTime();
+      time = clock.getElapsedTime();
 
-		Vertice a1, b1, c1, d1, e1, f1;
+      Vertice a1, b1, c1, d1, e1, f1;
 
-		Matrix4f move = Matrix4f::move(0.0f, -150.0f, 600.0f);
-		Matrix4f rotate = Matrix4f::rotate(0.0f, time.asSeconds() * 25.0f, 0.0f);
-		Matrix4f scale = Matrix4f::scale(1.0f, 1.0f, 1.0f);
-		Matrix4f project = Matrix4f::perspective(1.0f, 10000.0f, fov, width / height);
-		Matrix4f end_matrix = project * move * rotate * scale;
-	
-		ObjModel projectedModel = model.multiplyMatrix(end_matrix);
-		projectedModel.divideW();
-		projectedModel.screenspace(width, height);
-		
+      Matrix4f move = Matrix4f::move(0.0f, -150.0f, 600.0f);
+      Matrix4f rotate = Matrix4f::rotate(0.0f, time.asSeconds() * 25.0f, 0.0f);
+      Matrix4f scale = Matrix4f::scale(1.0f, 1.0f, 1.0f);
+      Matrix4f project = Matrix4f::perspective(1.0f, 10000.0f, fov, width / height);
+      Matrix4f end_matrix = project * move * rotate * scale;
+    
+      ObjModel projectedModel = model.multiplyMatrix(end_matrix);
+      projectedModel.divideW();
+      projectedModel.screenspace(width, height);
+      
 
-		render.fill(255, 255, 255);
-		render.resetZBuf();
-		render.renderModel(projectedModel, *modelTexture);
-		
-		texture.update((sf::Uint8*)render.pixels);
-		window.draw(sprite);
-		window.display();
-	}
+      render.fill(255, 255, 255);
+      render.resetZBuf();
+      render.renderModel(projectedModel, *modelTexture);
+      
+      texture.update((sf::Uint8*)render.pixels);
+      window.draw(sprite);
+      window.display();
+    }
+  }
 
   delete modelTexture;
 
