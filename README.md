@@ -25,7 +25,6 @@ Since this project is using [SFML](https://www.sfml-dev.org/), you will need fol
 Then run following commands in project directory:
 
     mkdir build && cd build
-    ln -s ../model .  # Make example model available
     cmake ..
     make
 
