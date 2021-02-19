@@ -32,22 +32,22 @@ int main()
 
 	sf::Image image;
 	image.loadFromFile("model/modelTexture.png");
-	Bitmap map(image.getSize().x, image.getSize().y);
+	Bitmap modelTexture(image.getSize().x, image.getSize().y);
 	const sf::Uint8* pp = image.getPixelsPtr();
 	for (int i = 0; i < image.getSize().x * image.getSize().y * 4; i += 4) {
-		map.pixels[i + 0] = (unsigned char)pp[i + 0];
-		map.pixels[i + 1] = (unsigned char)pp[i + 1];
-		map.pixels[i + 2] = (unsigned char)pp[i + 2];
-		map.pixels[i + 3] = (unsigned char)pp[i + 3];
+		modelTexture.pixels[i + 0] = (unsigned char)pp[i + 0];
+		modelTexture.pixels[i + 1] = (unsigned char)pp[i + 1];
+		modelTexture.pixels[i + 2] = (unsigned char)pp[i + 2];
+		modelTexture.pixels[i + 3] = (unsigned char)pp[i + 3];
 	}
 
 	std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
-	ObjModel vehicle("model/model.obj");
+	ObjModel model("model/model.obj");
 	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> speed = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
 	std::cout << "Model loading time: " << speed.count() << "s\n";
-	std::cout << "Vertice count: " << vehicle.vertices.size() << "\nNumber of normals: " << vehicle.normals.size() << "\nUV count: " << vehicle.uvcoo.size() << "\n";
-	std::cout << "Number of faces: " << vehicle.faces.size() << "\n";
+	std::cout << "Vertices count: " << model.vertices.size() << "\nNumber of normals: " << model.normals.size() << "\nUV count: " << model.uvcoo.size() << "\n";
+	std::cout << "Number of faces: " << model.faces.size() << "\n";
 
 	while (window.isOpen())
 	{
@@ -65,14 +65,14 @@ int main()
 		Matrix4f project = Matrix4f::perspective(1.0f, 10000.0f, fov, width / height);
 		Matrix4f end_matrix = project * move * rotate * scale;
 	
-		ObjModel vehicle2 = vehicle.multiplyMatrix(end_matrix);
-		vehicle2.divideW();
-		vehicle2.screenspace(width, height);
+		ObjModel projectedModel = model.multiplyMatrix(end_matrix);
+		projectedModel.divideW();
+		projectedModel.screenspace(width, height);
 		
 
 		render.fill(255, 255, 255);
 		render.resetZBuf();
-		render.renderModel(vehicle2, map);
+		render.renderModel(projectedModel, modelTexture);
 		
 		texture.update((sf::Uint8*)render.pixels);
 		window.draw(sprite);
