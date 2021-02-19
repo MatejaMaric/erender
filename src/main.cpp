@@ -1,5 +1,4 @@
 ﻿#include<SFML/Window.hpp>
-#include<SFML/Graphics.hpp>
 
 #include"Render.h"
 
@@ -28,30 +27,12 @@ int main()
 
 	Render render(width, height);	
 
-  Bitmap* modelTexture;
-
-  bool textureLoaded = false;
-
-	std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
-	sf::Image image;
-  textureLoaded = image.loadFromFile("model/modelTexture.png");
-  if (textureLoaded) {
-    modelTexture = new Bitmap(image.getSize().x, image.getSize().y);
-    const sf::Uint8* pp = image.getPixelsPtr();
-    for (int i = 0; i < image.getSize().x * image.getSize().y * 4; i += 4) {
-      modelTexture->pixels[i + 0] = (unsigned char)pp[i + 0];
-      modelTexture->pixels[i + 1] = (unsigned char)pp[i + 1];
-      modelTexture->pixels[i + 2] = (unsigned char)pp[i + 2];
-      modelTexture->pixels[i + 3] = (unsigned char)pp[i + 3];
-    }
-  }
-	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> modelTextureLoadingTime = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
+  Bitmap modelTexture("model/modelTexture.png");
 
 	ObjModel model("model/model.obj");
 
-  if (textureLoaded) {
-    std::cout << "Texture loading time: " << modelTextureLoadingTime.count() << "\n";
+  if (modelTexture.isLoaded) {
+    std::cout << "Texture loading time: " << modelTexture.loadingTime.count() << "\n";
   }
   else {
     std::cerr << "Couldn't load and/or find texture!\n";
@@ -66,7 +47,7 @@ int main()
     std::cerr << "Couldn't load and/or find model!\n";
   }
 
-  if (textureLoaded && model.isLoaded) {
+  if (modelTexture.isLoaded && model.isLoaded) {
     while (window.isOpen())
     {
       while (window.pollEvent(event))
@@ -90,15 +71,13 @@ int main()
 
       render.fill(255, 255, 255);
       render.resetZBuf();
-      render.renderModel(projectedModel, *modelTexture);
+      render.renderModel(projectedModel, modelTexture);
       
       texture.update((sf::Uint8*)render.pixels);
       window.draw(sprite);
       window.display();
     }
   }
-
-  delete modelTexture;
 
 	return 0;
 }

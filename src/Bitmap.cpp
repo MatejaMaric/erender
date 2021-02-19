@@ -1,13 +1,42 @@
 #include "Bitmap.h"
 
 Bitmap::Bitmap(int width_, int height_) {
+  std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
+
 	width = width_;
 	height = height_;
 	pixels = new unsigned char[width * height * 4];
+  image = nullptr;
+
+	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
+	loadingTime = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
+}
+
+Bitmap::Bitmap(std::string fileName) {
+  std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
+
+  image = new sf::Image();
+  isLoaded = image->loadFromFile(fileName);
+  if (isLoaded) {
+    width = image->getSize().x;
+    height = image->getSize().y;
+    pixels = (unsigned char*)image->getPixelsPtr();
+  }
+  else {
+    width = 0;
+    height = 0;
+    pixels = nullptr;
+  }
+
+	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
+	loadingTime = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
 }
 
 Bitmap::~Bitmap() {
-	delete[] pixels;
+  if (image == nullptr)
+    delete[] pixels;
+  else
+    delete image;
 }
 
 void Bitmap::fill(int r, int g, int b) {

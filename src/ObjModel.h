@@ -1,11 +1,9 @@
 #include"Vertice.h"
 #include"Bitmap.h"
 #include<vector>
-#include<string>
 #include<sstream>
 #include<fstream>
 #include<exception>
-#include<chrono>
 
 struct Triangle {
 	int p[3][3];
