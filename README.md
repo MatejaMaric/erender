@@ -31,4 +31,3 @@ Then run following commands in project directory:
 ### On Windows and Mac:
 
 On Windows and Mac you don't have any dependencies, so you can use CMake without any worry.
-**Just make sure `model` directory (where example model is located) is available where you built the executable.**
