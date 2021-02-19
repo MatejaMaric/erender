@@ -5,6 +5,7 @@
 #include<sstream>
 #include<fstream>
 #include<exception>
+#include<chrono>
 
 struct Triangle {
 	int p[3][3];
@@ -21,6 +22,7 @@ public:
 	std::vector<Texture_Coordinates> uvcoo;
 	std::vector<Vector4f> normals;
 	std::vector<Triangle> faces;
+  std::chrono::duration<double> loadingTime;
 	ObjModel();
 	ObjModel(std::string fileName);
 	ObjModel(const ObjModel& a);

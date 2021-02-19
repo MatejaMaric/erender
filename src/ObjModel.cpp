@@ -6,6 +6,8 @@ ObjModel::ObjModel() {}
 
 ObjModel::ObjModel(std::string fileName)
 {
+	std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
+
 	int hlp = 0;
 	std::ifstream f(fileName);
 	std::string s0;
@@ -56,6 +58,8 @@ ObjModel::ObjModel(std::string fileName)
 		}
 	}
 
+	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
+	loadingTime = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
 }
 
 ObjModel::ObjModel(const ObjModel& a) 

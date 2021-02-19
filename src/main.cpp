@@ -1,6 +1,4 @@
-﻿#include<chrono>
-
-#include<SFML/Window.hpp>
+﻿#include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>
 
 #include"Render.h"
@@ -30,22 +28,36 @@ int main()
 
 	Render render(width, height);	
 
-	sf::Image image;
-	image.loadFromFile("model/modelTexture.png");
-	Bitmap modelTexture(image.getSize().x, image.getSize().y);
-	const sf::Uint8* pp = image.getPixelsPtr();
-	for (int i = 0; i < image.getSize().x * image.getSize().y * 4; i += 4) {
-		modelTexture.pixels[i + 0] = (unsigned char)pp[i + 0];
-		modelTexture.pixels[i + 1] = (unsigned char)pp[i + 1];
-		modelTexture.pixels[i + 2] = (unsigned char)pp[i + 2];
-		modelTexture.pixels[i + 3] = (unsigned char)pp[i + 3];
-	}
+  Bitmap* modelTexture;
+
+  bool textureLoaded = false;
 
 	std::chrono::high_resolution_clock::time_point time1 = std::chrono::high_resolution_clock::now();
-	ObjModel model("model/model.obj");
+	sf::Image image;
+  textureLoaded = image.loadFromFile("model/modelTexture.png");
+  if (textureLoaded) {
+    modelTexture = new Bitmap(image.getSize().x, image.getSize().y);
+    const sf::Uint8* pp = image.getPixelsPtr();
+    for (int i = 0; i < image.getSize().x * image.getSize().y * 4; i += 4) {
+      modelTexture->pixels[i + 0] = (unsigned char)pp[i + 0];
+      modelTexture->pixels[i + 1] = (unsigned char)pp[i + 1];
+      modelTexture->pixels[i + 2] = (unsigned char)pp[i + 2];
+      modelTexture->pixels[i + 3] = (unsigned char)pp[i + 3];
+    }
+  }
 	std::chrono::high_resolution_clock::time_point time2 = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> speed = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
-	std::cout << "Model loading time: " << speed.count() << "s\n";
+	std::chrono::duration<double> modelTextureLoadingTime = std::chrono::duration_cast<std::chrono::duration<double>>(time2 - time1);
+
+	ObjModel model("model/model.obj");
+
+  if (textureLoaded) {
+    std::cout << "Texture loading time: " << modelTextureLoadingTime.count() << "\n";
+  }
+  else {
+    std::cerr << "Couldn't load and/or find texture!\n";
+  }
+
+	std::cout << "Model loading time: " << model.loadingTime.count() << "s\n";
 	std::cout << "Vertices count: " << model.vertices.size() << "\nNumber of normals: " << model.normals.size() << "\nUV count: " << model.uvcoo.size() << "\n";
 	std::cout << "Number of faces: " << model.faces.size() << "\n";
 
@@ -72,12 +84,14 @@ int main()
 
 		render.fill(255, 255, 255);
 		render.resetZBuf();
-		render.renderModel(projectedModel, modelTexture);
+		render.renderModel(projectedModel, *modelTexture);
 		
 		texture.update((sf::Uint8*)render.pixels);
 		window.draw(sprite);
 		window.display();
 	}
+
+  delete modelTexture;
 
 	return 0;
 }
