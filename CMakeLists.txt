@@ -39,6 +39,9 @@ set(SFML_BUILD_GRAPHICS ON)
 set(SFML_BUILD_WINDOW ON)
 set(SFML_BUILD_NETWORK OFF)
 
+# Don't use shared libraries.
+set(BUILD_SHARED_LIBS OFF)
+
 # Compile and add SFML to project
 add_subdirectory(external/SFML)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
