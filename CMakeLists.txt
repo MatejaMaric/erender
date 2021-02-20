@@ -52,3 +52,10 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/model
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/model)
+
+# Copy model to project directory
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/model
+        ${CMAKE_CURRENT_BINARY_DIR}/model)
