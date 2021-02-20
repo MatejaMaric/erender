@@ -33,8 +33,6 @@ endif()
 
 # Compile and add SFML to project
 add_subdirectory(external/SFML)
-target_include_directories(${PROJECT_NAME} PUBLIC external/SFML/include)
-target_link_directories(${PROJECT_NAME} PUBLIC external/SFML/lib)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 
 # Copy model to build directory
