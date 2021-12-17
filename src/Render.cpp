@@ -45,7 +45,7 @@ void Render::drawTriangle(Vertice t1, Vertice t2, Vertice t3, Bitmap& texture)
 					w3 /= surface;
 
 					float w = 1.0f / (w1 * t1.w + w2 * t2.w + w3 * t3.w);
-					float z =/* w * */1.0f / ((w1 * t1.z + w2 * t2.z + w3 * t3.z) * w);
+					float z = -1.0f / ((w1 * t1.z + w2 * t2.z + w3 * t3.z) * w);
 					if (zBuffer[(y * (width)) + x] > z) {
 						zBuffer[(y * (width)) + x] = z;
 						float u = w * (w1 * t1.u + w2 * t2.u + w3 * t3.u);
